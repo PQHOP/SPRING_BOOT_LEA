@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -31,9 +32,11 @@ public class WebSecurityConfig{
 
 
     @Bean
-    InMemoryUserDetailsManager userDetailsManager(){
-        Set<UserDetails> users = new HashSet<>();
-        users.add(User.builder().username("fpt").password(passwordEncoder().encode("fpt")).roles("ADMIN").build());
+     public UserDetailsService userDetailsService(){
+        UserDetails users = User.withUsername("fpt")
+                .password(passwordEncoder().encode("fpt"))
+                .authorities("ADMIN")
+                .build();
         return new InMemoryUserDetailsManager(users);
     }
 }
